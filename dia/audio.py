@@ -109,10 +109,10 @@ def audio_to_codebook(
             Signal sampling_rate
 
     Returns:
-        A list of frames containing the discrete encoded codes for the input audio waveform, along with rescaling
-        factors for each chunk when `normalize` is True. Each frames is a tuple `(codebook, scale)`, with
-        `codebook` of shape `[batch_size, num_codebooks, frames]`.
-        Scale is not used here.
+        A tensor of delayed codebook frames with shape
+        `[batch_size, frames, num_codebooks]`. The tensor contains the
+        discrete encoded codes for the input audio waveform after applying
+        the specified delay pattern.
 
     """
     audio_data = model.preprocess(input_values, sample_rate)
