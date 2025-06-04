@@ -170,15 +170,22 @@ class DiaConfig(BaseModel, frozen=True):
     def save(self, path: str) -> None:
         """Save the current configuration instance to a JSON file.
 
-        Ensures the parent directory exists and the file has a .json extension.
+        Ensures the parent directory exists (if provided) and the file has a
+        ``.json`` extension.
 
         Args:
             path: The target file path to save the configuration.
 
         Raises:
-            ValueError: If the path is not a file with a .json extension.
+            ValueError: If the path is not a file with a ``.json`` extension.
         """
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        if not path.endswith(".json"):
+            raise ValueError("Configuration path must end with '.json'")
+
+        directory = os.path.dirname(path)
+        if directory:
+            os.makedirs(directory, exist_ok=True)
+
         config_json = self.model_dump_json(indent=2)
         with open(path, "w") as f:
             f.write(config_json)
