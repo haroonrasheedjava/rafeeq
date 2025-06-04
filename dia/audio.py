@@ -171,7 +171,7 @@ def build_revert_indices(B: int, T: int, C: int, delay_pattern: tp.List[int]) ->
             t_idx_BxTxC.reshape(-1),
             c_idx_BxTxC.reshape(-1),
         ],
-        axis=1,
+        dim=1,
     ).long()  # Ensure indices are long type
 
     return t_idx_BxTxC, indices_BTCx3
