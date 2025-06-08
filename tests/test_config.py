@@ -3,6 +3,8 @@ import os
 import sys
 from pathlib import Path
 
+import pytest
+
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -51,3 +53,19 @@ def test_save_without_directory(tmp_path, monkeypatch):
     with open(path, "r") as f:
         json.load(f)
     os.remove(path)
+
+
+def test_save_with_directory(tmp_path):
+    cfg = minimal_config()
+    path = tmp_path / "dir1" / "config.json"
+    cfg.save(str(path))
+    assert path.is_file()
+    with open(path, "r") as f:
+        json.load(f)
+
+
+def test_save_invalid_extension(tmp_path):
+    cfg = minimal_config()
+    invalid_path = tmp_path / "config.txt"
+    with pytest.raises(ValueError):
+        cfg.save(str(invalid_path))
